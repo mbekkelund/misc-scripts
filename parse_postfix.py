@@ -48,16 +48,17 @@ if __name__ == '__main__':
 
     for line in maillog:
         
-        m = re.search('\w+@[\w.-]+', line)
-        if m:
-            sender = m.group(0)
-            user   = sender.split("@")[0] # need this for skip_users matching
+        if re.search("(?<=from=<)\w+", line):
+            m = re.search('\w+@[\w.-]+', line)
+            if m:
+                sender = m.group(0)
+                user   = sender.split("@")[0] # need this for skip_users matching
 
-            if not user in skip_users: 
-                if senders.get(sender):
-                    senders[sender] = senders.get(sender) + 1
-                else:
-                    senders[sender] = 1
+                if not user in skip_users: 
+                    if senders.get(sender):
+                        senders[sender] = senders.get(sender) + 1
+                    else:
+                        senders[sender] = 1
 
     if arguments.d:
         print "=== Settings: ==="
